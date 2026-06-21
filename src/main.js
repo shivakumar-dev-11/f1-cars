@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 // Configuration Constants
 const TOTAL_FRAMES = 151;
 const HERO_FRAME_INDEX = 16;
-const IMAGES_DIR = '/ezgif-115f6705db4f5095-jpg/';
+const IMAGES_DIR = `${import.meta.env.BASE_URL}ezgif-115f6705db4f5095-jpg/`;
 const FRAME_PREFIX = 'ezgif-frame-';
 const FRAME_EXTENSION = '.jpg';
 
@@ -135,38 +135,39 @@ function preloadImageSequence() {
   const percentLabel = document.getElementById('loader-percentage');
   const preloader = document.getElementById('preloader');
 
+  const handleFrameDone = () => {
+    loadedCount++;
+    const percent = Math.round((loadedCount / TOTAL_FRAMES) * 100);
+    
+    if (progressBar) progressBar.style.width = `${percent}%`;
+    if (percentLabel) percentLabel.textContent = `${percent}%`;
+
+    if (loadedCount === TOTAL_FRAMES) {
+      setTimeout(() => {
+        if (preloader) preloader.classList.add('fade-out');
+        
+        initCarCanvas();
+        initThreeScene();
+        setupScrollAnimations();
+        setupHotspots();
+        setupExplodedList();
+        setupTrackSimulation();
+        
+        gsap.to('#hud-overlay', { opacity: 1, duration: 1.8, delay: 0.4 });
+      }, 500);
+    }
+  };
+
   for (let i = 1; i <= TOTAL_FRAMES; i++) {
     const img = new Image();
     const frameNum = String(i).padStart(3, '0');
     img.src = `${IMAGES_DIR}${FRAME_PREFIX}${frameNum}${FRAME_EXTENSION}`;
     
-    img.onload = () => {
-      loadedCount++;
-      const percent = Math.round((loadedCount / TOTAL_FRAMES) * 100);
-      
-      if (progressBar) progressBar.style.width = `${percent}%`;
-      if (percentLabel) percentLabel.textContent = `${percent}%`;
-
-      if (loadedCount === TOTAL_FRAMES) {
-        setTimeout(() => {
-          if (preloader) preloader.classList.add('fade-out');
-          
-          initCarCanvas();
-          initThreeScene();
-          setupScrollAnimations();
-          setupHotspots();
-          setupExplodedList();
-          setupTrackSimulation();
-          
-          // Fade in general HUD overlay
-          gsap.to('#hud-overlay', { opacity: 1, duration: 1.8, delay: 0.4 });
-        }, 500);
-      }
-    };
+    img.onload = handleFrameDone;
 
     img.onerror = () => {
       console.error(`Failed to load frame ${i}`);
-      loadedCount++;
+      handleFrameDone();
     };
 
     imageSequence.push(img);
