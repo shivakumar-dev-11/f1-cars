@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 // Configuration Constants
 const TOTAL_FRAMES = 151;
 const HERO_FRAME_INDEX = 16;
-const IMAGES_DIR = `${import.meta.env.BASE_URL}ezgif-115f6705db4f5095-jpg/`;
+const IMAGES_DIR = 'ezgif-115f6705db4f5095-jpg/';
 const FRAME_PREFIX = 'ezgif-frame-';
 const FRAME_EXTENSION = '.jpg';
 
