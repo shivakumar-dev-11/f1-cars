@@ -539,13 +539,15 @@ function setupEvents() {
       const label = audioToggle.querySelector('.audio-label');
 
       if (isMuted) {
-        onIcon.classList.add('hidden');
-        offIcon.classList.remove('hidden');
-        label.textContent = "AUDIO OFF";
+        if (onIcon) onIcon.classList.add('hidden');
+        if (offIcon) offIcon.classList.remove('hidden');
+        if (label) label.textContent = "AUDIO OFF";
+        audioToggle.classList.remove('active');
       } else {
-        onIcon.classList.remove('hidden');
-        offIcon.classList.add('hidden');
-        label.textContent = "AUDIO ON";
+        if (onIcon) onIcon.classList.remove('hidden');
+        if (offIcon) offIcon.classList.add('hidden');
+        if (label) label.textContent = "AUDIO ON";
+        audioToggle.classList.add('active');
       }
     });
   }
@@ -558,9 +560,14 @@ function setupEvents() {
       
       const audioToggle = document.getElementById('audio-toggle');
       if (audioToggle) {
-        audioToggle.querySelector('.audio-icon.on').classList.remove('hidden');
-        audioToggle.querySelector('.audio-icon.off').classList.add('hidden');
-        audioToggle.querySelector('.audio-label').textContent = "AUDIO ON";
+        const onIcon = audioToggle.querySelector('.audio-icon.on');
+        const offIcon = audioToggle.querySelector('.audio-icon.off');
+        const label = audioToggle.querySelector('.audio-label');
+
+        if (onIcon) onIcon.classList.remove('hidden');
+        if (offIcon) offIcon.classList.add('hidden');
+        if (label) label.textContent = "AUDIO ON";
+        audioToggle.classList.add('active');
       }
     });
   }
