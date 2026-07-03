@@ -9,6 +9,7 @@ export default defineConfig({
   },
   build: {
     outDir: 'docs',
-    emptyOutDir: true
+    emptyOutDir: true,
+    chunkSizeWarningLimit: 1000
   }
 });
