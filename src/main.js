@@ -691,11 +691,50 @@ function setupModals() {
   const bookingForm = document.getElementById('booking-form');
   const bookingSuccess = document.getElementById('booking-success');
   if (bookingForm) {
-    bookingForm.addEventListener('submit', (e) => {
+    bookingForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       audio.playUIClick();
-      bookingForm.classList.add('hidden');
-      if (bookingSuccess) bookingSuccess.classList.remove('hidden');
+
+      const submitButton = bookingForm.querySelector('button[type="submit"]');
+      const statusEl = document.getElementById('booking-status');
+      const bookingData = {
+        name: document.getElementById('booking-name')?.value || '',
+        email: document.getElementById('booking-email')?.value || '',
+        affiliation: document.getElementById('booking-agency')?.value || ''
+      };
+
+      if (submitButton) submitButton.disabled = true;
+      if (statusEl) {
+        statusEl.textContent = 'Submitting request...';
+        statusEl.className = 'form-status loading';
+      }
+
+      try {
+        const response = await fetch('/api/bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(bookingData)
+        });
+
+        const contentType = response.headers.get('content-type') || '';
+        if (!contentType.includes('application/json')) {
+          throw new Error('Booking API did not return JSON.');
+        }
+
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.error || 'Could not submit booking request.');
+
+        bookingForm.reset();
+        bookingForm.classList.add('hidden');
+        if (bookingSuccess) bookingSuccess.classList.remove('hidden');
+      } catch (error) {
+        if (statusEl) {
+          statusEl.textContent = error.message;
+          statusEl.className = 'form-status error';
+        }
+      } finally {
+        if (submitButton) submitButton.disabled = false;
+      }
     });
   }
 }

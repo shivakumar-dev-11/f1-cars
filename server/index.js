@@ -1,6 +1,7 @@
 import express from 'express';
 import { connectMongo } from './config/mongo.js';
 import { env } from './config/env.js';
+import { bookingRoutes } from './routes/bookingRoutes.js';
 import { driverRoutes } from './routes/driverRoutes.js';
 import { feedbackRoutes } from './routes/feedbackRoutes.js';
 
@@ -14,6 +15,7 @@ app.get('/api/health', (_req, res) => {
 
 app.use('/api/drivers', driverRoutes);
 app.use('/api/feedback', feedbackRoutes);
+app.use('/api/bookings', bookingRoutes);
 
 app.use((err, _req, res, _next) => {
   console.error(err);
