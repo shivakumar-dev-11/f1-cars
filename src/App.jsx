@@ -27,6 +27,18 @@ const fallbackDrivers = [
   display_order: index + 1
 }));
 
+async function readApiJson(response) {
+  const contentType = response.headers.get('content-type') || '';
+
+  if (!contentType.includes('application/json')) {
+    const text = await response.text();
+    const message = text.slice(0, 120).replace(/\s+/g, ' ').trim();
+    throw new Error(message || 'API route did not return JSON.');
+  }
+
+  return response.json();
+}
+
 function getRouteKey() {
   const route = window.location.hash.replace(/^#\/?/, '') || 'home';
   return ['home', 'evolution', 'mechanical', 'technical', 'goats'].includes(route) ? route : 'home';
@@ -195,7 +207,7 @@ function FeedbackForm({ drivers }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(state)
       });
-      const payload = await response.json();
+      const payload = await readApiJson(response);
       if (!response.ok) throw new Error(payload.error || 'Could not send feedback.');
 
       setState({ name: '', email: '', related_driver: '', message: '' });
@@ -248,7 +260,7 @@ function GoatsPage() {
     fetch('/api/drivers')
       .then((response) => {
         if (!response.ok) throw new Error('API unavailable');
-        return response.json();
+        return readApiJson(response);
       })
       .then((payload) => {
         if (active && Array.isArray(payload.drivers)) {
