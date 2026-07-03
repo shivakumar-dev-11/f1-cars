@@ -211,7 +211,7 @@ function FeedbackForm({ drivers }) {
       if (!response.ok) throw new Error(payload.error || 'Could not send feedback.');
 
       setState({ name: '', email: '', related_driver: '', message: '' });
-      setStatus({ type: 'success', message: 'Suggestion received. It is saved in the MongoDB feedback collection.' });
+      setStatus({ type: 'success', message: 'Suggestion received. Thank you for helping improve the GOAT records.' });
     } catch (error) {
       setStatus({ type: 'error', message: error.message });
     }
