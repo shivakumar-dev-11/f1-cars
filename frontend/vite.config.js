@@ -1,6 +1,11 @@
 import { defineConfig } from 'vite';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  root: __dirname,
   base: './',
   server: {
     proxy: {
@@ -8,7 +13,7 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: 'dist',
+    outDir: resolve(__dirname, '../dist'),
     emptyOutDir: true,
     chunkSizeWarningLimit: 1000
   }

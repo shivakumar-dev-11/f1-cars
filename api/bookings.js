@@ -1,5 +1,5 @@
-import { connectMongo } from '../server/config/mongo.js';
-import { Booking } from '../server/models/Booking.js';
+import { connectMongo } from '../backend/config/mongo.js';
+import { Booking } from '../backend/models/Booking.js';
 
 function normalizeBooking(body = {}) {
   return {

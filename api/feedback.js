@@ -1,5 +1,5 @@
-import { connectMongo } from '../server/config/mongo.js';
-import { Feedback } from '../server/models/Feedback.js';
+import { connectMongo } from '../backend/config/mongo.js';
+import { Feedback } from '../backend/models/Feedback.js';
 
 function normalizeFeedback(body = {}) {
   return {

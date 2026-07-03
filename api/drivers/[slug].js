@@ -1,5 +1,5 @@
-import { connectMongo } from '../../server/config/mongo.js';
-import { Driver } from '../../server/models/Driver.js';
+import { connectMongo } from '../../backend/config/mongo.js';
+import { Driver } from '../../backend/models/Driver.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {

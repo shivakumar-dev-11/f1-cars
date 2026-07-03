@@ -1,4 +1,4 @@
-import { connectMongo } from '../server/config/mongo.js';
+import { connectMongo } from '../backend/config/mongo.js';
 
 export default async function handler(_req, res) {
   try {
