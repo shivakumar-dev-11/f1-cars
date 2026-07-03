@@ -123,11 +123,19 @@ const tracksData = {
 };
 
 // Main Initialization Function
-window.addEventListener('DOMContentLoaded', () => {
+export function initHomeExperience() {
+  if (!document.getElementById('scroll-container')) return;
+
+  ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+  imageSequence.length = 0;
+  loadedCount = 0;
+  activeFrameIndex = 0;
+  if (trackAnimationInterval) clearInterval(trackAnimationInterval);
+
   preloadImageSequence();
   setupEvents();
   setupUIHoverSounds();
-});
+}
 
 // Preload F1 Car Image Sequence
 function preloadImageSequence() {
